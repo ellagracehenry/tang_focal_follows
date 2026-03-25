@@ -20,12 +20,12 @@ ObjID = [0]
 paused = [False]
 playing_task = None
 annotations = []
-video_speed = 3.0  # Playback speed multiplier
+video_speed = 1  # Playback speed multiplier
 fps = 30  # Default FPS, will update dynamically based on video
 out_fps = 0.5 # Default temporal resolution for SAM2. 
 special_frame_start = 0  # Default starting frame for SAM2
 special_frame_interval = 10  # Default, will calculate dynamically
-ObjType = ["0%_foraging"]  # Default fish family
+ObjType = ["1-25%_foraging"]  # Default fish family
 Damselfish_present = ["no damselfish present"]
 orig_vid_width, orig_vid_height = 0, 0
 aspect_ratio = 1.78
@@ -40,7 +40,7 @@ canvas_image_id = None
 
 # Create the main window
 root = ctk.CTk()
-root.title("Video Annotation GUI")
+root.title("Blue Tang Focal Follow GUI")
 root.geometry("1200x700") # May need to change this line to fit different computer screens
 
 
@@ -212,7 +212,7 @@ def play_video():
     current_frame_index[0] += 1
 
     # real-time based on video FPS
-    delay_ms = int(1000 / fps)
+    delay_ms = int(1000 / (fps*video_speed))
 
     playing_task = root.after(delay_ms, play_video)
     
@@ -266,10 +266,7 @@ def add_annotation():
     annotation = {
         "Frame": current_frame_index[0],
         "ClickType": ClickType[0],
-        "ObjID": ObjID[0],
-        "ObjType": ObjType[0],
-        "Damselfish_present": Damselfish_present[0],
-        "Location": np.array([round(xLocation[0], 3), round(yLocation[0], 3)])
+        "ObjID": ObjID[0]
     }
     annotations.append(annotation)
     update_annotation_table()
@@ -285,11 +282,8 @@ def add_entry(event=None):
     ObjID[0] = fish_name.get()
     annotation = {
         "Frame": current_frame_index[0],
-        "ClickType": 3,
-        "ObjID": ObjID[0],
-        "ObjType": ObjType[0],
-        "Damselfish_present": Damselfish_present[0],
-        "Location": np.array([0.0, 0.0])
+        "ClickType": "New damselfish foraging patch",
+        "ObjID": ObjID[0]
     }
     annotations.append(annotation)
     print(f"Annotation added: {annotation}")
@@ -304,11 +298,115 @@ def add_exit(event=None):
     ObjID[0] = fish_name.get()
     annotation = {
         "Frame": current_frame_index[0],
-        "ClickType": 4,
-        "ObjID": ObjID[0],
-        "ObjType": ObjType[0],
-        "Damselfish_present": Damselfish_present[0],
-        "Location": np.array([0.0, 0.0])
+        "ClickType": "New no damselfish foraging patch",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+
+#Add one hotkey
+def add_one(event=None):
+    """Adds a new annotation with 0% foraging and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "0%_foraging",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+def add_two(event=None):
+    """Adds a new annotation with 1-25% foraging and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "1-25%_foraging",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+def add_three(event=None):
+    """Adds a new annotation with 26-50% foraging and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "26-50%_foraging",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+def add_four(event=None):
+    """Adds a new annotation with 51-75%% foraging and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "51-75%_foraging",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+def add_five(event=None):
+    """Adds a new annotation with 76-100% foraging and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "76-100%_foraging",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+def add_six(event=None):
+    """Adds a new annotation with Dissapted and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "Dissapated",
+        "ObjID": ObjID[0]
+    }
+    annotations.append(annotation)
+    print(f"Annotation added: {annotation}")
+    update_annotation_table()
+
+def add_seven(event=None):
+    """Adds a new annotation with NA and (0,0) location."""
+    global annotations, ObjType, ObjID, Damselfish_present, current_frame_index, root
+    if root.focus_get() and isinstance(root.focus_get(), (ctk.CTkEntry, Entry)):
+        return
+    ObjID[0] = fish_name.get()
+    annotation = {
+        "Frame": current_frame_index[0],
+        "ClickType": "NA",
+        "ObjID": ObjID[0]
     }
     annotations.append(annotation)
     print(f"Annotation added: {annotation}")
@@ -324,13 +422,9 @@ def update_annotation_table():
             "end",
             iid=i,
             values=(
-                i,
                 annotation["Frame"],
                 annotation["ClickType"],
-                annotation["ObjID"],
-                annotation["ObjType"],
-                annotation["Damselfish_present"],
-                annotation["Location"][:2],
+                annotation["ObjID"]
             ),
         )
         treeview.see(i)
@@ -380,33 +474,12 @@ def edit_selected():
     objid_entry = Entry(edit_win)
     objid_entry.insert(0, annotation["ObjID"])
     objid_entry.grid(row=2, column=1)
-
-    Label(edit_win, text="ObjType:").grid(row=3, column=0)
-    objtype_options = ["0%_foraging", "1-25%_foraging", "26-75%_foraging", "76-100%_foraging"]
-    objtype_combo = ttk.Combobox(edit_win, values = objtype_options, state="readonly")
-    objtype_combo.set(annotation["ObjType"])
-    objtype_combo.grid(row=3, column=1)
-
-    Label(edit_win, text="Damselfish_present:").grid(row=4, column=0)
-    damselfish_present_options = ["damselfish present", "no damselfish present"]
-    damselfish_present_options_combo = ttk.Combobox(edit_win, values = damselfish_present_options, state="readonly")
-    damselfish_present_options_combo.set(annotation["Damselfish_present"])
-    damselfish_present_options_combo.grid(row=3, column=1)
-
-    Label(edit_win, text="Location (x,y):").grid(row=5, column=0)
-    loc_entry = Entry(edit_win)
-    loc_entry.insert(0, f"{annotation['Location'][0]},{annotation['Location'][1]}")
-    loc_entry.grid(row=4, column=1)
     
     def save_changes():
         try:
             annotation["Frame"] = int(frame_entry.get())
-            annotation["ClickType"] = int(click_entry.get())
+            annotation["ClickType"] = click_entry.get()
             annotation["ObjID"] = objid_entry.get()
-            annotation["ObjType"] = objtype_combo.get()
-            annotation["Damselfish_present"] = damselfish_present_options_combo.get()
-            x, y = map(float, loc_entry.get().split(","))
-            annotation["Location"] = np.array([round(x, 3), round(y, 3)])
         except Exception as e:
             messagebox.showerror("Error", f"Invalid input: {e}")
             return
@@ -436,18 +509,25 @@ def toggle_click_type():
 
 # Toggle Fish Family
 def toggle_obj_type():
-    if ObjType[0] == "0%_foraging":
-        ObjType[0] = "1-25%_foraging"
-        button_toggle_obj_type.configure(text="1-25%_foraging")
-    elif ObjType[0] == "1-25%_foraging":
-        ObjType[0] = "26-75%_foraging"
-        button_toggle_obj_type.configure(text="26-75%_foraging")
-    elif ObjType[0] == "26-75%_foraging":
+    if ObjType[0] == "1-25%_foraging":
+        ObjType[0] = "26-50%_foraging"
+        button_toggle_obj_type.configure(text="26-50%_foraging")
+    elif ObjType[0] == "26-50%_foraging":
+        ObjType[0] = "51-75%_foraging"
+        button_toggle_obj_type.configure(text="51-75%_foraging")
+    elif ObjType[0] == "51-75%_foraging":
         ObjType[0] = "76-100%_foraging"
         button_toggle_obj_type.configure(text="76-100%_foraging")
     elif ObjType[0] == "76-100%_foraging":
-        ObjType[0] = "0%_foraging"
-        button_toggle_obj_type.configure(text="0%_foraging")
+        ObjType[0] = "Dissapated"
+        button_toggle_obj_type.configure(text="Dissapated")
+    elif ObjType[0] == "Dissapated":
+        ObjType[0] = "NA"
+        button_toggle_obj_type.configure(text="NA")
+    elif ObjType[0] == "NA":
+        ObjType[0] = "1-25%_foraging"
+        button_toggle_obj_type.configure(text="1-25%_foraging")
+
 
 #Toggle damselfish presence
 def toggle_damselfish_present():
@@ -485,7 +565,7 @@ def import_annotations():
         
         #Append annotations to existing list
             for annotation in imported_annotations:
-                if isinstance(annotation, dict) and all(key in annotation for key in ["Frame", "ClickType", "ObjID", "ObjType", "Damselfish_present","Location"]):
+                if isinstance(annotation, dict) and all(key in annotation for key in ["Frame", "ClickType", "ObjID"]):
                     annotations.append(annotation)
                 else:
                     raise ValueError("One or more annotations in the file have an invalid format.")
@@ -495,7 +575,7 @@ def import_annotations():
             imported_annotations = pd.read_csv(file_path)
 
             #check if the necessary columns are in the .csv
-            required_columns = ["Frame", "ClickType", "ObjID", "ObjType", "Damselfish_present","Location"]
+            required_columns = ["Frame", "ClickType", "ObjID"]
             if not all(col in imported_annotations.columns for col in required_columns):
                 raise ValueError(f"The CSV file must contain the following columns: {', '.join(required_columns)}.")
             for _, row in imported_annotations.iterrows():
@@ -508,9 +588,6 @@ def import_annotations():
                     "Frame": int(row["Frame"]),
                     "ClickType": row["ClickType"],
                     "ObjID": row["ObjID"],
-                    "ObjType": row["ObjType"],
-                    "Damselfish_present":row["Damselfish_present"],
-                    "Location": np.array(location)
                 }
                 annotations.append(annotation)
                         #Update the annotation table with new data
@@ -581,55 +658,26 @@ def save_annotations():
         return
     
     # Split annotations by Click Type
-    general_annotations = [
-        a for a in annotations if a["ClickType"] in [0, 1, 3, 4]
-    ]
-    bite_annotations = [
-        a for a in annotations if a["ClickType"] == 2
-    ]
-
     msg = f"File(s) saved in {save_dir}. "
 
     # Case 1: Save locations as .npy for SAM2
     if save_locations_var.get():
-        np.save(os.path.join(save_dir, f"{file_name}_annotations.npy"), general_annotations)
+        np.save(os.path.join(save_dir, f"{file_name}_annotations.npy"), annotations)
         msg += f"Location annotations saved as '{file_name}_annotation.npy'. "
     
-    # Case 2: Save bites as .csv
-    if save_bites_var.get():
-        csv_path = os.path.join(save_dir, f"{file_name}_bites.csv")
-        with open(csv_path, "w", newline="") as csvfile:
-            fieldnames = ["Frame", "ClickType", "ObjID", "ObjType", "Damselfish_present", "Location"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for annotation in bite_annotations:
-                writer.writerow({
-                    "Frame": annotation["Frame"],
-                    "ClickType": annotation["ClickType"],
-                    "ObjID": annotation["ObjID"],
-                    "ObjType": annotation["ObjType"],
-                    "Damselfish_present": annotation["Damselfish_present"],
-                    "Location": annotation["Location"].tolist()
-                })
-        msg += f"Bite annotations saved as '{file_name}_bites.csv'. "
 
     # Case 3: Save ALL annotations in a single csv
     if save_all_var.get():
         all_csv_path = os.path.join(save_dir, f"{file_name}_all.csv")
         with open(all_csv_path, "w", newline="") as csvfile:
-            fieldnames = ["Frame", "ClickType", "ObjID", "ObjType", "Damselfish_present", "Location", "x", "y"]
+            fieldnames = ["Frame", "ClickType", "ObjID"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for annotation in annotations:
                 writer.writerow({
                     "Frame": annotation["Frame"],
                     "ClickType": annotation["ClickType"],
-                    "ObjID": annotation["ObjID"],
-                    "ObjType": annotation["ObjType"],
-                    "Damselfish_present": annotation["Damselfish_present"],
-                    "Location": annotation["Location"].tolist(),
-                    "x": annotation["Location"][0], # first number
-                    "y": annotation["Location"][1] # second number
+                    "ObjID": annotation["ObjID"]
                 })
         msg += f"All annotations saves as '{file_name}_all.csv"
 
@@ -653,7 +701,7 @@ def update_time_display():
     time_display_var.set(f"Time: {minutes:02}:{seconds:02} | Frame: {frame_num} | Speed: {video_speed:.1f}x")
 
     if frame_num >= special_frame_start and (frame_num - special_frame_start) % special_frame_interval == 0:
-        special_frame_var.set("Annotate % if foraging")
+        special_frame_var.set("Annotate Foraging State!")
         label_special_frame.configure(font=("Arial", 14, "bold"), fg="red")
     else:
         special_frame_var.set("----")
@@ -821,6 +869,16 @@ root.bind("o", lambda event: add_exit())
 # Bind the 'i' key to add an annotation
 root.bind("i", lambda event: add_entry())
 
+#Foraging levels
+root.bind("1", lambda event: add_one())
+root.bind("2", lambda event: add_two())
+root.bind("3", lambda event: add_three())
+root.bind("4", lambda event: add_four())
+root.bind("5", lambda event: add_five())
+root.bind("6", lambda event: add_six())
+root.bind("7", lambda event: add_seven())
+
+
 # Top level container layout
 frame_main=ctk.CTkFrame(root)
 frame_main.pack(side=TOP, fill=BOTH, expand=True)
@@ -832,11 +890,11 @@ frame_controls.pack(side=LEFT, fill=Y, padx=5, pady=5)
 button_browse = ctk.CTkButton(frame_controls, text="Browse Video", command=load_video, height = 20)
 button_browse.pack(pady=10)
 
-Label(frame_controls, text="SAM2 Start Frame:").pack(pady=5)
+#Label(frame_controls, text="SAM2 Start Frame:").pack(pady=5)
 special_frame_start_var = IntVar(value=0)
-special_frame_entry = ttk.Entry(frame_controls, textvariable=special_frame_start_var)
-special_frame_entry.pack(pady=5)
-special_frame_entry.pack_forget
+#special_frame_entry = ttk.Entry(frame_controls, textvariable=special_frame_start_var)
+#special_frame_entry.pack(pady=5)
+#special_frame_entry.pack_forget
 
 def update_special_frame_start():
     global special_frame_start
@@ -852,10 +910,11 @@ button_toggle_click.pack_forget()
 
 button_toggle_obj_type = ctk.CTkButton(
     frame_controls,
-    text="0%_foraging",
+    text="1-25%_foraging",
     command=toggle_obj_type, height = 20
 )
 button_toggle_obj_type.pack(pady=5)
+button_toggle_obj_type.pack_forget()
 
 button_toggle_damselfish_present = ctk.CTkButton(
     frame_controls,
@@ -863,6 +922,7 @@ button_toggle_damselfish_present = ctk.CTkButton(
     command=toggle_damselfish_present, height = 20
 )
 button_toggle_damselfish_present.pack(pady=5)
+button_toggle_damselfish_present.pack_forget()
 
 Label(frame_controls, text="Heterospecifics present:").pack(pady=5)
 fish_name = StringVar()
@@ -874,12 +934,32 @@ button_add_annotation = ctk.CTkButton(frame_controls, text="Add Annotation ('Ret
 button_add_annotation.pack(pady=5)
 button_add_annotation.pack_forget()
 
-button_add_entry = ctk.CTkButton(frame_controls, text="Add new foraging patch ('i')", command=add_entry, height = 20)
+button_add_entry = ctk.CTkButton(frame_controls, text="Add new damselfish foraging patch ('i')", command=add_entry, height = 20)
 button_add_entry.pack(pady=5)
 
-button_add_exit = ctk.CTkButton(frame_controls, text="Add Exit ('o')", command=add_exit, height = 20)
+button_add_exit = ctk.CTkButton(frame_controls, text="Add new no damselfish foraging patch('o')", command=add_exit, height = 20)
 button_add_exit.pack(pady=5)
-button_add_exit.pack_forget()
+
+button_add_exit = ctk.CTkButton(frame_controls, text="0%_foraging ('1')", command=add_one, height = 20)
+button_add_exit.pack(pady=5)
+
+button_add_exit = ctk.CTkButton(frame_controls, text="1-25%_foraging ('2')", command=add_two, height = 20)
+button_add_exit.pack(pady=5)
+
+button_add_exit = ctk.CTkButton(frame_controls, text="26-50%_foraging ('3')", command=add_three, height = 20)
+button_add_exit.pack(pady=5)
+
+button_add_exit = ctk.CTkButton(frame_controls, text="51-75%_foraging ('4')", command=add_four, height = 20)
+button_add_exit.pack(pady=5)
+
+button_add_exit = ctk.CTkButton(frame_controls, text="76-100%_foraging ('5')", command=add_five, height = 20)
+button_add_exit.pack(pady=5)
+
+button_add_exit = ctk.CTkButton(frame_controls, text="Dissapated ('6')", command=add_six, height = 20)
+button_add_exit.pack(pady=5)
+
+button_add_exit = ctk.CTkButton(frame_controls, text="NA ('7')", command=add_seven, height = 20)
+button_add_exit.pack(pady=5)
 
 button_edit_selected = ctk.CTkButton(frame_controls, text="Edit Selected", command=edit_selected, height = 20)
 button_edit_selected.pack(pady=10)
@@ -901,19 +981,22 @@ entry_file_name.pack(pady=5)
 # Checkboxes for saving options
 save_bites_var = BooleanVar(value=False)
 save_locations_var = BooleanVar(value=True)
-save_all_var = BooleanVar(value=False)
+save_all_var = BooleanVar(value=True)
 
 checkbox_bites = ctk.CTkCheckBox(frame_controls, text="Save Bites File", variable=save_bites_var)
 checkbox_bites.pack()
+checkbox_bites.pack_forget()
 
 checkbox_locations = ctk.CTkCheckBox(frame_controls, text="Save Locations File", variable=save_locations_var)
 checkbox_locations.pack()
+checkbox_locations.pack_forget()
 
-checkbox_all = ctk.CTkCheckBox(frame_controls, text="Save Eels", variable=save_all_var)
+checkbox_all = ctk.CTkCheckBox(frame_controls, text="Save Annotations", variable=save_all_var)
 checkbox_all.pack()
 
 button_save_annotations = ctk.CTkButton(frame_controls, text="Save Annotations", command=save_annotations, height = 20)
 button_save_annotations.pack(pady=5)
+
 
 
 #### Top Central Playback controls ####
@@ -926,7 +1009,7 @@ frame_central_controls.pack(side=TOP, fill=X, padx=10, pady=10)
 button_play_pause = ctk.CTkButton(frame_central_controls, text="Pause ||", command=pause, width = 40)
 button_play_pause.pack(pady=5, side=LEFT)
 
-button_prev_special_frame = ctk.CTkButton(frame_central_controls, text="Prev SAM2 Frame", command=prev_special_frame)
+button_prev_special_frame = ctk.CTkButton(frame_central_controls, text="Prev Foraging Annotation Frame", command=prev_special_frame)
 button_prev_special_frame.pack(side=LEFT, padx=5, pady=5)
 
 button_prev_frame = ctk.CTkButton(frame_central_controls, text="<< Prev Frame", command=lambda: advance_frame(-1), width = 40)
@@ -936,7 +1019,7 @@ button_next_frame = ctk.CTkButton(frame_central_controls, text="Next Frame >>", 
 button_next_frame.pack(pady=5, side=LEFT)
 
 
-button_next_special_frame = ctk.CTkButton(frame_central_controls, text="Next SAM2 Frame", command=next_special_frame)
+button_next_special_frame = ctk.CTkButton(frame_central_controls, text="Next Foraging Annotation Frame", command=next_special_frame)
 button_next_special_frame.pack(side=LEFT, padx=5, pady=5)
 
 button_decrease_speed = ctk.CTkButton(frame_central_controls, text="- Speed", command=lambda: adjust_speed(-0.1), width = 40)
@@ -1023,11 +1106,11 @@ frame_annotations = ctk.CTkFrame(frame_main)
 frame_annotations.pack(side=LEFT, fill=Y, padx=5, pady=5)
 
 
-columns = ("ID", "Frame", "Click Type", "Fish Label", "ObjType", "Damselfish_present", "Coordinates")
+columns = ("Frame", "Click Type", "Fish Label")
 treeview = ttk.Treeview(frame_annotations, columns=columns, show="headings")
 for col in columns:
     treeview.heading(col, text=col)
-    treeview.column(col, width=50)  # Adjust column width for readability
+    treeview.column(col, width=100)  # Adjust column width for readability
 
 treeview.pack(fill=BOTH, expand=True)
 treeview.bind("<Double-1>", on_double_click)
